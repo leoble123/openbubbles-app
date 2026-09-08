@@ -48,6 +48,7 @@ import 'package:convert/convert.dart';
 import 'package:bluebubbles/helpers/types/constants.dart' as constants;
 import 'dart:ui' as ui;
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
+import 'package:bluebubbles/helpers/backend/demo_seed.dart';
 import 'package:bluebubbles/helpers/backend/startup_tasks.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:google_sign_in_all_platforms/google_sign_in_all_platforms.dart';
@@ -4818,7 +4819,7 @@ class RustPushService extends GetxService {
           doPoll(data.$2, pollState);
         }
       }
-      if (state == null && ss.settings.finishedSetup.value) {
+      if (state == null && ss.settings.finishedSetup.value && !kDemoSeed) {
         ss.settings.finishedSetup.value = false;
         ss.saveSettings();
         try {
