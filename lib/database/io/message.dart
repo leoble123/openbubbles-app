@@ -716,7 +716,12 @@ class Message {
       for (int part in messageSummaryInfo.first.retractedParts) {
         final existing = parts.indexWhere((e) => e.part == part);
         if (existing >= 0) {
-          parts.removeAt(existing);
+          // Keep the already-parsed text/subject/attachments around (rather
+          // than discarding them) so a "reveal" UI has the original content
+          // to show - this doesn't change what's displayed by default, since
+          // callers already branch on isUnsent to hide the normal bubble.
+          parts[existing].isUnsent = true;
+          continue;
         }
         parts.add(MessagePart(
           part: part,

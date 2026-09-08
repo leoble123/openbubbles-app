@@ -39,6 +39,7 @@ class PinnedConversationTile extends CustomStateful<ConversationTileController> 
 class _PinnedConversationTileState extends CustomState<PinnedConversationTile, void, ConversationTileController> {
   ConversationListController get listController => controller.listController;
   Offset? longPressPosition;
+  StreamSubscription? _eventSub;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _PinnedConversationTileState extends CustomState<PinnedConversationTile, v
       controller.shouldHighlight.value = cm.activeChat?.chat.guid == controller.chat.guid;
     }
 
-    eventDispatcher.stream.listen((event) {
+    _eventSub = eventDispatcher.stream.listen((event) {
       if (event.item1 == 'update-highlight' && mounted) {
         if ((kIsDesktop || kIsWeb) && event.item2 == controller.chat.guid) {
           controller.shouldHighlight.value = true;
@@ -62,6 +63,12 @@ class _PinnedConversationTileState extends CustomState<PinnedConversationTile, v
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _eventSub?.cancel();
+    super.dispose();
   }
 
   @override

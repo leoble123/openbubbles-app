@@ -753,7 +753,12 @@ class OptionalBackdrop extends StatelessWidget {
     return Obx(() {
       false.obs.value;
       var translucentMode = controller?.backgroundPoster.value != null;
-      if (translucentMode) {
+      // Give the iOS skin a "Liquid Glass"-style frosted bar even without a
+      // custom chat background, matching stock iOS Messages' translucent
+      // toolbars. A custom background poster still gets its own (slightly
+      // more opaque) treatment above.
+      var glassMode = translucentMode || ss.settings.skin.value == Skins.iOS;
+      if (glassMode) {
         return ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.compose(
@@ -762,7 +767,7 @@ class OptionalBackdrop extends StatelessWidget {
                   CupertinoTheme.maybeBrightnessOf(context) == Brightness.dark ? darkMatrix : lightMatrix,
                 )),
             child: Container(
-              color: context.theme.colorScheme.properSurface.withOpacity(translucentMode ? 0.7 : 1),
+              color: context.theme.colorScheme.properSurface.withOpacity(translucentMode ? 0.7 : 0.85),
               child: child,
             )
           ),

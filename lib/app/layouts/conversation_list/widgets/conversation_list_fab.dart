@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
@@ -99,16 +101,38 @@ class _ConversationListFABState extends CustomState<ConversationListFAB, void, C
                 ? null : () => controller.openCamera(context),
               child: CallbackShortcuts(
                 bindings: _newMessageShortcuts,
-                child: FloatingActionButton(
-                  focusNode: controller.newMessageFocusNode,
-                  backgroundColor: context.theme.colorScheme.primary,
-                  child: Icon(
-                    iOS ? CupertinoIcons.pencil : Icons.message,
-                    color: context.theme.colorScheme.onPrimary,
-                    size: 25
-                  ),
-                  onPressed: () => controller.openNewChatCreator(context)
-                ),
+                // "Liquid Glass"-style frosted pill for the iOS skin; Samsung
+                // (which shares this widget tree) keeps the solid FAB.
+                child: iOS
+                    ? ClipOval(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                          child: FloatingActionButton(
+                            focusNode: controller.newMessageFocusNode,
+                            backgroundColor: context.theme.colorScheme.primary.withOpacity(0.55),
+                            elevation: 0,
+                            shape: CircleBorder(
+                              side: BorderSide(color: Colors.white.withOpacity(0.25), width: 1),
+                            ),
+                            child: Icon(
+                              CupertinoIcons.pencil,
+                              color: context.theme.colorScheme.onPrimary,
+                              size: 25,
+                            ),
+                            onPressed: () => controller.openNewChatCreator(context),
+                          ),
+                        ),
+                      )
+                    : FloatingActionButton(
+                        focusNode: controller.newMessageFocusNode,
+                        backgroundColor: context.theme.colorScheme.primary,
+                        child: Icon(
+                          Icons.message,
+                          color: context.theme.colorScheme.onPrimary,
+                          size: 25
+                        ),
+                        onPressed: () => controller.openNewChatCreator(context)
+                      ),
               ),
             ),
           ],

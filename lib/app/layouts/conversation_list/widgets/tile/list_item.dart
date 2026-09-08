@@ -85,7 +85,7 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
+    return RepaintBoundary(child: Obx(() {
       final tile = ConversationTile(
         key: Key(chat.guid),
         chat: chat,
@@ -111,7 +111,7 @@ class ListItem extends StatelessWidget {
           secondaryBackground: (kIsDesktop || kIsWeb)
               ? null
               : Obx(() => slideBackground(chat, true)),
-          key: UniqueKey(),
+          key: ValueKey(chat.guid),
           onDismissed: (direction) {
             MaterialSwipeAction action;
             if (direction == DismissDirection.endToStart) {
@@ -139,6 +139,6 @@ class ListItem extends StatelessWidget {
       } else {
         return tile;
       }
-    });
+    }));
   }
 }
