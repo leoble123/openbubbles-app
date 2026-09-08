@@ -70,7 +70,7 @@ jobs:
       # First run is expected to fail until ffmpeg_kit_flutter_new is fixed.
       - name: Run Build Script
         run: |
-          flutter build apk --flavor alpha --debug --target-platform android-arm64
+          flutter build apk --flavor alpha --debug --target-platform android-arm64 --dart-define=DEMO_SEED=true
       
       - uses: actions/upload-artifact@v4
         with:
