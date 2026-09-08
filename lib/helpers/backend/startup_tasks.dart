@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:bluebubbles/helpers/backend/demo_seed.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -46,6 +47,8 @@ class StartupTasks {
     // The next thing we need to do is initialize the database.
     // If the database is not initialized, we cannot do anything.
     await Database.init();
+
+    await seedDemoDataIfRequested();
 
     // Load FCM data into settings from the database
     // We only need to do this for the main startup
