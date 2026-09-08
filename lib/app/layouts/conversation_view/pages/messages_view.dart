@@ -822,7 +822,7 @@ class MessagesViewState extends OptimizedState<MessagesView> {
                                     index: index,
                                     controller: scrollController,
                                     highlightColor: context.theme.colorScheme.surface.withOpacity(0.7),
-                                    child: toReturn);
+                                    child: RepaintBoundary(child: toReturn));
                               }),
                           const SliverPadding(
                             padding: EdgeInsets.all(70),

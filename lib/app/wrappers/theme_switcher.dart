@@ -1,5 +1,6 @@
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/types/constants.dart';
+import 'package:bluebubbles/app/components/custom/cupertino_edge_back_gesture.dart';
 import 'package:bluebubbles/app/components/custom/custom_cupertino_page_transition.dart';
 import 'package:bluebubbles/app/components/custom/custom_bouncing_scroll_physics.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -17,7 +18,10 @@ class ThemeSwitcher extends StatefulWidget {
       case Skins.iOS:
         return PageRouteBuilder<T>(pageBuilder: (context, animation, secondaryAnimation) => builder.call(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return CustomCupertinoPageTransition(primaryRouteAnimation: animation, child: child, linearTransition: false);
+            return CustomCupertinoPageTransition(
+                primaryRouteAnimation: animation,
+                linearTransition: false,
+                child: CupertinoEdgeBackGestureDetector(child: child));
           });
       case Skins.Material:
         return MaterialPageRoute<T>(builder: builder);
@@ -26,7 +30,10 @@ class ThemeSwitcher extends StatefulWidget {
       default:
         return PageRouteBuilder<T>(pageBuilder: (context, animation, secondaryAnimation) => builder.call(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return CustomCupertinoPageTransition(primaryRouteAnimation: animation, child: child, linearTransition: false);
+            return CustomCupertinoPageTransition(
+                primaryRouteAnimation: animation,
+                linearTransition: false,
+                child: CupertinoEdgeBackGestureDetector(child: child));
           });
     }
   }

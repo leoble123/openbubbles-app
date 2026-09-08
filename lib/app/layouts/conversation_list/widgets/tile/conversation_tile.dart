@@ -220,6 +220,7 @@ class ConversationTile extends CustomStateful<ConversationTileController> {
 
 class _ConversationTileState extends CustomState<ConversationTile, void, ConversationTileController> with AutomaticKeepAliveClientMixin {
   ConversationListController get listController => controller.listController;
+  StreamSubscription? _eventSub;
 
   @override
   bool get wantKeepAlive => true;
@@ -237,7 +238,7 @@ class _ConversationTileState extends CustomState<ConversationTile, void, Convers
           cm.activeChat?.chat.guid == controller.chat.guid;
     }
 
-    eventDispatcher.stream.listen((event) {
+    _eventSub = eventDispatcher.stream.listen((event) {
       if (event.item1 == 'update-highlight' && mounted) {
         if ((kIsDesktop || kIsWeb) && event.item2 == controller.chat.guid) {
           controller.shouldHighlight.value = true;
@@ -246,6 +247,12 @@ class _ConversationTileState extends CustomState<ConversationTile, void, Convers
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _eventSub?.cancel();
+    super.dispose();
   }
 
   @override
@@ -318,6 +325,7 @@ class ChatTitle extends CustomStateful<ConversationTileController> {
 class _ChatTitleState extends CustomState<ChatTitle, void, ConversationTileController> {
   String title = "Unknown";
   StreamSubscription? sub;
+  StreamSubscription? _eventSub;
   String? cachedDisplayName = "";
   List<Handle> cachedParticipants = [];
 
@@ -356,7 +364,8 @@ class _ChatTitleState extends CustomState<ChatTitle, void, ConversationTileContr
         });
       });
       // listen for contacts update (if tile is active, we can update it)
-      eventDispatcher.stream.listen((event) {
+      _eventSub = eventDispatcher.stream.listen((event) {
+        if (!mounted) return;
         if (event.item1 != 'update-contacts') return;
         if (event.item2.isNotEmpty) {
           bool changed = false;
@@ -403,6 +412,7 @@ class _ChatTitleState extends CustomState<ChatTitle, void, ConversationTileContr
   @override
   void dispose() {
     if (!kIsWeb) sub?.cancel();
+    _eventSub?.cancel();
     super.dispose();
   }
 
@@ -441,6 +451,7 @@ class _ChatSubtitleState extends CustomState<ChatSubtitle, void, ConversationTil
   String subtitle = "Unknown";
   String fakeText = faker.lorem.words(1).join(" ");
   StreamSubscription? sub;
+  StreamSubscription? _eventSub;
   String? cachedLatestMessageGuid = "";
   DateTime? cachedDateCreated;
   DateTime? cachedDateEdited;
@@ -498,7 +509,8 @@ class _ChatSubtitleState extends CustomState<ChatSubtitle, void, ConversationTil
       });
     } else {
       // listen for contacts update (if tile is active, we can update it)
-      eventDispatcher.stream.listen((event) {
+      _eventSub = eventDispatcher.stream.listen((event) {
+        if (!mounted) return;
         if (event.item1 != 'update-contacts') return;
         if (event.item2.isNotEmpty) {
           String newSubtitle = MessageHelper.getNotificationText(controller.chat.latestMessage);
@@ -540,6 +552,7 @@ class _ChatSubtitleState extends CustomState<ChatSubtitle, void, ConversationTil
   @override
   void dispose() {
     sub?.cancel();
+    _eventSub?.cancel();
     super.dispose();
   }
 

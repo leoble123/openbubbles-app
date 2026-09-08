@@ -29,6 +29,7 @@
 .pub/
 /build/
 pubspeck.lock
+**/ephemeral/
 
 # Web related
 

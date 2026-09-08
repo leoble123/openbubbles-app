@@ -1,6 +1,7 @@
 import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_leading_icon.dart';
 import 'package:bluebubbles/helpers/ui/theme_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class SettingsSwitch extends StatelessWidget {
@@ -24,12 +25,17 @@ class SettingsSwitch extends StatelessWidget {
   final SettingsLeadingIcon? leading;
   final bool padding;
 
+  void _onChanged(bool value) {
+    HapticFeedback.selectionClick();
+    onChanged.call(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () => onChanged.call(!initialVal),
+        onTap: () => _onChanged(!initialVal),
         splashColor: context.theme.colorScheme.surfaceVariant,
         splashFactory: context.theme.splashFactory,
         child: ListTile(
@@ -48,7 +54,7 @@ class SettingsSwitch extends StatelessWidget {
           trailing: Switch(
             value: initialVal,
             activeColor: context.theme.colorScheme.primary.lightenOrDarken(15),
-            onChanged: onChanged,
+            onChanged: _onChanged,
           ),
           subtitle: subtitle != null ? Text(
             subtitle!,
