@@ -41,9 +41,11 @@ class EchoTheme {
       colorScheme: scheme,
       fontFamily: fontFamily,
       textTheme: text,
-      // Echo paints its own atmospheric background; the scaffold must not cover it.
-      scaffoldBackgroundColor: Colors.transparent,
-      canvasColor: Colors.transparent,
+      // Echo screens paint their own atmosphere and opt into a transparent
+      // Scaffold themselves; screens inherited from the OpenBubbles stack still
+      // get a solid charcoal floor so nothing renders over the void.
+      scaffoldBackgroundColor: EchoTokens.charcoal,
+      canvasColor: EchoTokens.charcoal,
       dialogBackgroundColor: Colors.transparent,
       splashFactory: InkSparkle.splashFactory,
       splashColor: accent.withOpacity(0.10),

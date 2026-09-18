@@ -12,7 +12,8 @@ import 'package:bluebubbles/services/network/http_overrides.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/window_effects.dart';
-import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
+import 'package:bluebubbles/echo/screens/conversations/echo_conversation_list.dart';
+import 'package:bluebubbles/echo/theme/echo_theme.dart';
 import 'package:bluebubbles/app/layouts/startup/failure_to_start.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/layouts/startup/splash_screen.dart';
@@ -279,15 +280,16 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Echo is dark-first: both AdaptiveTheme slots carry the same theme so the
+    // app never flips to a light variant with the system.
+    final echoTheme = EchoTheme.build();
     return AdaptiveTheme(
-      light: lightTheme.copyWith(
-          textSelectionTheme: TextSelectionThemeData(selectionColor: lightTheme.colorScheme.primary)),
-      dark:
-          darkTheme.copyWith(textSelectionTheme: TextSelectionThemeData(selectionColor: darkTheme.colorScheme.primary)),
-      initial: AdaptiveThemeMode.system,
+      light: echoTheme,
+      dark: echoTheme,
+      initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'BlueBubbles',
+        title: 'Echo',
         theme: theme.copyWith(appBarTheme: theme.appBarTheme.copyWith(elevation: 0.0)),
         darkTheme: darkTheme.copyWith(appBarTheme: darkTheme.appBarTheme.copyWith(elevation: 0.0)),
         navigatorKey: ns.key,
@@ -646,10 +648,7 @@ class _HomeState extends OptimizedState<Home> with WidgetsBindingObserver, TrayL
                         e: "Required Server Version: v0.2.0",
                       );
                     }
-                    return ConversationList(
-                      showArchivedChats: false,
-                      showUnknownSenders: false,
-                    );
+                    return const EchoConversationList();
                   } else {
                     return PopScope(
                       canPop: false,
