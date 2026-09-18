@@ -1,4 +1,5 @@
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
+import 'package:bluebubbles/echo/demo/echo_demo_home.dart';
 import 'package:bluebubbles/echo/glass/glass_surface.dart';
 import 'package:bluebubbles/echo/theme/echo_tokens.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -109,10 +110,30 @@ class _EchoWelcomeState extends State<EchoWelcome> with TickerProviderStateMixin
           const SizedBox(height: EchoTokens.space4),
           FadeTransition(
             opacity: _stagger(0.55, 1.0),
-            child: Text(
-              'Setup takes a couple of minutes.',
-              style: text.labelSmall?.copyWith(color: EchoTokens.textTertiary),
-              textAlign: TextAlign.center,
+            child: Column(
+              children: [
+                Text(
+                  'Setup takes a couple of minutes.',
+                  style: text.labelSmall?.copyWith(color: EchoTokens.textTertiary),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: EchoTokens.space2),
+                TextButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const EchoDemoHome()),
+                  ),
+                  style: TextButton.styleFrom(foregroundColor: EchoTokens.accentIce),
+                  child: Text(
+                    'Look around first',
+                    style: text.labelLarge?.copyWith(color: EchoTokens.accentIce),
+                  ),
+                ),
+                Text(
+                  'Sample conversations. No account, nothing sent.',
+                  style: text.labelSmall?.copyWith(color: EchoTokens.textTertiary),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ],
