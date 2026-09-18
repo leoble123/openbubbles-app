@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:bluebubbles/echo/screens/setup/echo_qr_scanner.dart';
 import 'dart:math';
 
 import 'package:bluebubbles/app/layouts/settings/pages/passwords/password_models.dart';
-import 'package:bluebubbles/app/layouts/setup/pages/sync/qr_code_scanner.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -978,7 +978,10 @@ class _PasswordEditorPanelState extends OptimizedState<PasswordEditorPanel> {
       Uint8List? response = await Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (BuildContext context) {
-            return QRCodeScanner();
+            return const EchoQrScanner(
+              title: 'Scan Code',
+              subtitle: 'Scan a QR code to fill this field.',
+            );
           },
         ),
       );

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bluebubbles/echo/screens/setup/echo_qr_scanner.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -77,7 +78,10 @@ class HwInpState extends OptimizedState<HwInp> {
       final Uint8List? response = await Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (BuildContext context) {
-            return QRCodeScanner();
+            return const EchoQrScanner(
+              title: 'Pair Your Devices',
+              subtitle: 'Scan the code from your registered Apple device to link it with Echo.',
+            );
           },
       ),
       );

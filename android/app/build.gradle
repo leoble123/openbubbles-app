@@ -107,6 +107,13 @@ android {
             resValue "string", "file_provider", "com.openbubbles.messaging.fileprovider"
             applicationId "com.openbubbles.messaging"
         }
+        echo {
+            dimension "app"
+            resValue "string", "app_name_en", "Echo"
+            resValue "color", "ic_launcher_background", "#05060a"
+            resValue "string", "file_provider", "com.echo.messaging.fileprovider"
+            applicationId "com.echo.messaging"
+        }
     }
 
     buildFeatures {
@@ -122,6 +129,7 @@ android {
             productFlavors.beta.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
             productFlavors.alpha.signingConfig signingConfigs.release
+            productFlavors.echo.signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
         }

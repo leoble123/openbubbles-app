@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bluebubbles/echo/screens/setup/echo_qr_scanner.dart';
 import 'dart:convert';
 
 import 'package:bluebubbles/app/layouts/settings/dialogs/custom_headers_dialog.dart';
@@ -574,7 +575,10 @@ class _ServerCredentialsState extends OptimizedState<ServerCredentials> {
       Uint8List? response = await Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (BuildContext context) {
-            return QRCodeScanner();
+            return const EchoQrScanner(
+              title: 'Pair Your Server',
+              subtitle: 'Scan the QR code on your server to connect automatically.',
+            );
           },
         ),
       );

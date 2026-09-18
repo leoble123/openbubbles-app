@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bluebubbles/echo/screens/setup/echo_qr_scanner.dart';
 
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:barcode_widget/barcode_widget.dart';
@@ -13,7 +14,6 @@ import 'package:bluebubbles/utils/share.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/dialogs/sync_dialog.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
-import 'package:bluebubbles/app/layouts/setup/pages/sync/qr_code_scanner.dart';
 import 'package:bluebubbles/app/layouts/setup/dialogs/manual_entry_dialog.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
@@ -483,7 +483,10 @@ class _ServerManagementPanelState extends CustomState<ServerManagementPanel, voi
                                 utf8.decode(await Navigator.of(context).push(
                                   CupertinoPageRoute(
                                     builder: (BuildContext context) {
-                                      return QRCodeScanner();
+                                      return const EchoQrScanner(
+                                        title: 'Scan Server Code',
+                                        subtitle: 'Scan the QR code shown by your server to update its address.',
+                                      );
                                     },
                                   ),
                                 )),
