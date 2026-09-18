@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:bluebubbles/echo/screens/customization/echo_appearance_studio.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/notification_providers_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/tasker_panel.dart';
@@ -413,7 +414,24 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                 children: [
                                   SettingsTile(
                                     backgroundColor: tileColor,
-                                    title: "Appearance Settings",
+                                    title: "Chat Appearance",
+                                    subtitle: "Background, accent, bubble style and more",
+                                    leading: const SettingsLeadingIcon(
+                                      iosIcon: CupertinoIcons.paintbrush,
+                                      materialIcon: Icons.palette_outlined,
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => const EchoAppearanceStudio(),
+                                        ),
+                                      );
+                                    },
+                                    trailing: const NextButton(),
+                                  ),
+                                  SettingsTile(
+                                    backgroundColor: tileColor,
+                                    title: "Advanced Theming",
                                     onTap: () {
                                       ns.pushAndRemoveSettingsUntil(
                                         context,

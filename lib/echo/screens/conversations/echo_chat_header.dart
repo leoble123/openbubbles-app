@@ -1,6 +1,7 @@
 import 'package:bluebubbles/app/layouts/conversation_details/conversation_details.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/header/header_widgets.dart';
 import 'package:bluebubbles/echo/glass/glass_surface.dart';
+import 'package:bluebubbles/echo/screens/customization/echo_appearance_studio.dart';
 import 'package:bluebubbles/echo/theme/echo_tokens.dart';
 import 'package:bluebubbles/echo/widgets/echo_avatar.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -103,6 +104,19 @@ class EchoChatHeader extends StatelessWidget implements PreferredSizeWidget {
               ),
               ManualMark(controller: controller),
               FaceTimeBtn(controller: controller),
+              IconButton(
+                icon: const Icon(Icons.palette_outlined, size: 20),
+                color: EchoTokens.textSecondary,
+                tooltip: 'Chat appearance',
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EchoAppearanceStudio(
+                      chatGuid: chat.guid,
+                      chatTitle: chat.properTitle,
+                    ),
+                  ),
+                ),
+              ),
               IconButton(
                 icon: const Icon(Icons.info_outline_rounded, size: 20),
                 color: EchoTokens.textSecondary,
