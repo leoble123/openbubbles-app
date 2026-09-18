@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:bluebubbles/echo/glass/glass_surface.dart';
+import 'package:bluebubbles/echo/theme/echo_tokens.dart';
 import 'dart:math';
 import 'dart:ui';
 
@@ -863,18 +865,21 @@ class TextFieldComponentState extends State<TextFieldComponent> {
         valueListenable: isRecordingNotifier,
         builder: (context, isRecording, child) {
         return Container(
-          decoration: iOS
-              ? BoxDecoration(
-                  border: Border.fromBorderSide(BorderSide(
-                    color: (isRecording & iOS) ? context.theme.colorScheme.primary.withOpacity(1.0) : context.theme.colorScheme.properSurface,
-                    width: 1.5,
-                  )),
-                  borderRadius: BorderRadius.circular(20),
-                )
-              : BoxDecoration(
-                  color: context.theme.colorScheme.properSurface,
-                  borderRadius: BorderRadius.circular(20),
-                ),
+          // Echo composer: a floating glass bar. Recording lights the border
+          // with the accent so the state is visible without a colour-only cue.
+          decoration: BoxDecoration(
+            color: EchoTokens.fillFor(3, opaque: EchoGlass.highContrast),
+            borderRadius: BorderRadius.circular(EchoTokens.radiusLg),
+            border: Border.all(
+              color: isRecording
+                  ? context.theme.colorScheme.primary
+                  : Colors.white.withOpacity(0.16),
+              width: isRecording ? 1.6 : 1.0,
+            ),
+            boxShadow: isRecording
+                ? EchoTokens.glow(context.theme.colorScheme.primary, strength: 0.7)
+                : EchoTokens.lift(3),
+          ),
           clipBehavior: Clip.antiAlias,
           child: AnimatedSize(
             duration: const Duration(milliseconds: 400),

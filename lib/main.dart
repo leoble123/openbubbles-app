@@ -13,6 +13,7 @@ import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/window_effects.dart';
 import 'package:bluebubbles/echo/screens/conversations/echo_conversation_list.dart';
+import 'package:bluebubbles/echo/theme/echo_prefs.dart';
 import 'package:bluebubbles/echo/theme/echo_theme.dart';
 import 'package:bluebubbles/app/layouts/startup/failure_to_start.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
@@ -287,11 +288,16 @@ class Main extends StatelessWidget {
       light: echoTheme,
       dark: echoTheme,
       initial: AdaptiveThemeMode.dark,
-      builder: (theme, darkTheme) => GetMaterialApp(
+      // Rebuilding the theme inside the builder — rather than recreating
+      // AdaptiveTheme — lets the accent change live without tearing down the
+      // navigator and dropping the user back at the conversation list.
+      builder: (theme, darkTheme) => Obx(() {
+        final accented = EchoTheme.build(accent: echoPrefs.accent.value);
+        return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Echo',
-        theme: theme.copyWith(appBarTheme: theme.appBarTheme.copyWith(elevation: 0.0)),
-        darkTheme: darkTheme.copyWith(appBarTheme: darkTheme.appBarTheme.copyWith(elevation: 0.0)),
+        theme: accented,
+        darkTheme: accented,
         navigatorKey: ns.key,
         scrollBehavior: const MaterialScrollBehavior().copyWith(
           // Specifically for GNU/Linux & Android-x86 family, where touch isn't interpreted as a drag device by Flutter apparently.
@@ -428,7 +434,8 @@ class Main extends StatelessWidget {
           ),
         ),
         defaultTransition: Transition.cupertino,
-      ),
+      );
+      }),
     );
   }
 }

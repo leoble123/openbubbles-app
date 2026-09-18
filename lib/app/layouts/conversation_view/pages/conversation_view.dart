@@ -1,8 +1,8 @@
-import 'package:bluebubbles/app/layouts/conversation_view/widgets/header/cupertino_header.dart';
-import 'package:bluebubbles/app/layouts/conversation_view/widgets/header/material_header.dart';
+import 'package:bluebubbles/echo/glass/echo_atmosphere.dart';
+import 'package:bluebubbles/echo/theme/echo_prefs.dart';
+import 'package:bluebubbles/echo/screens/conversations/echo_chat_header.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/text_field/conversation_text_field.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/posterkit.dart';
-import 'package:bluebubbles/app/wrappers/gradient_background_wrapper.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/pages/messages_view.dart';
@@ -116,11 +116,7 @@ class ConversationViewState extends OptimizedState<ConversationView> {
             child: Scaffold(
               backgroundColor: ss.settings.windowEffect.value != WindowEffect.disabled ? Colors.transparent : context.theme.colorScheme.background,
               extendBodyBehindAppBar: true,
-              appBar: PreferredSize(
-                  preferredSize: Size(ns.width(context), ((kIsDesktop ? (!iOS ? 25 : 5) : 0) + 90 * (iOS ? ss.settings.avatarScale.value : 0) + (!iOS ? kToolbarHeight : 0) + (controller.suggestedContact.value != null || controller.suggestShare.value ? 68 : 0))),
-                  child: iOS
-                  ? CupertinoHeader(controller: controller)
-                  : MaterialHeader(controller: controller) as PreferredSizeWidget),
+              appBar: EchoChatHeader(controller: controller),
               body: Actions(
                 actions: {
                   if (ss.settings.enablePrivateAPI.value)
@@ -139,8 +135,10 @@ class ConversationViewState extends OptimizedState<ConversationView> {
                     QuestionRecentIntent: QuestionRecentAction(widget.chat),
                   OpenChatDetailsIntent: OpenChatDetailsAction(context, widget.chat),
                 },
-                child: GradientBackground(
-                  controller: controller,
+                child: EchoAtmosphere(
+                  wallpaperPath: echoPrefs.wallpaperFor(chat.guid),
+                  accent: echoPrefs.accentFor(chat.guid),
+                  drift: false,
                   child: SizedBox(
                     height: context.height,
                     child: Stack(

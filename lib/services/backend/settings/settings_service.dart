@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bluebubbles/echo/theme/echo_prefs.dart';
 import 'dart:math';
 
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/private_api_panel.dart';
@@ -41,6 +42,8 @@ class SettingsService extends GetxService {
   Future<void> init({bool headless = false}) async {
     prefs = await SharedPreferences.getInstance();
     settings = Settings.getSettings();
+    // Echo's appearance preferences share this SharedPreferences instance.
+    echoPrefs.load();
     if (!headless && !kIsWeb && !kIsDesktop) {
       // refresh rate
       try {

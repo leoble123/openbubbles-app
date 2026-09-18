@@ -5,6 +5,7 @@ import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/echo/glass/echo_atmosphere.dart';
 import 'package:bluebubbles/echo/glass/glass_surface.dart';
 import 'package:bluebubbles/echo/screens/conversations/echo_chat_tile.dart';
+import 'package:bluebubbles/echo/theme/echo_prefs.dart';
 import 'package:bluebubbles/echo/theme/echo_tokens.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +100,10 @@ class _EchoConversationListState extends State<EchoConversationList> {
 
   @override
   Widget build(BuildContext context) {
-    return EchoAtmosphere(
+    return Obx(() => EchoAtmosphere(
       accent: _accent,
+      wallpaperPath: echoPrefs.wallpaper.value,
+      drift: echoPrefs.ambientMotion.value,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -151,7 +154,8 @@ class _EchoConversationListState extends State<EchoConversationList> {
                       return EchoChatTile(
                         key: ValueKey(chat.guid),
                         chat: chat,
-                        accent: _accent,
+                        accent: echoPrefs.accentFor(chat.guid),
+                        compact: echoPrefs.density.value == EchoDensity.compact,
                         onTap: () => _openChat(chat),
                       );
                     },
@@ -170,7 +174,7 @@ class _EchoConversationListState extends State<EchoConversationList> {
           onSettings: () => ns.push(context, SettingsPage()),
         ),
       ),
-    );
+    ));
   }
 }
 
