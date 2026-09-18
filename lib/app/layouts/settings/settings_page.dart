@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bluebubbles/echo/screens/customization/echo_appearance_studio.dart';
+import 'package:bluebubbles/echo/widgets/echo_account_card.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/notification_providers_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/tasker_panel.dart';
@@ -128,35 +129,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                         SliverList(
                           delegate: SliverChildListDelegate(
                             <Widget>[
-                              if (!kIsWeb && !iOS)
-                                SettingsSection(
-                                  backgroundColor: tileColor,
-                                  children: [
-                                    SettingsTile(
-                                      backgroundColor: tileColor,
-                                      title: ss.settings.redactedMode.value &&
-                                              ss.settings.hideContactInfo.value
-                                          ? "User Name"
-                                          : ss.settings.userName.value,
-                                      subtitle: "Tap to view more details",
-                                      onTap: () {
-                                        ns.pushAndRemoveSettingsUntil(
-                                          context,
-                                          ProfilePanel(),
-                                          (route) => route.isFirst,
-                                        );
-                                      },
-                                      leading: ContactAvatarWidget(
-                                        handle: null,
-                                        borderThickness: 0.1,
-                                        editable: false,
-                                        fontSize: 22,
-                                        size: 50,
-                                      ),
-                                      trailing: const NextButton(),
-                                    ),
-                                  ],
-                                ),
+                              if (!kIsWeb) const EchoAccountCard(),
                               if (!kIsWeb && backend.getRemoteService() != null)
                                 SettingsHeader(
                                     iosSubtitle: iosSubtitle,
