@@ -16,7 +16,7 @@ import 'package:bluebubbles/echo/screens/conversations/echo_conversation_list.da
 import 'package:bluebubbles/echo/theme/echo_theme.dart';
 import 'package:bluebubbles/app/layouts/startup/failure_to_start.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
-import 'package:bluebubbles/app/layouts/startup/splash_screen.dart';
+import 'package:bluebubbles/echo/screens/setup/echo_splash.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart';
@@ -104,7 +104,7 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
         /* ----- SPLASH SCREEN INITIALIZATION ----- */
         if (!ss.settings.finishedSetup.value && !kIsWeb && !kIsDesktop) {
           runApp(MaterialApp(
-              home: SplashScreen(shouldNavigate: false),
+              home: const EchoSplash(shouldNavigate: false),
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSwatch(
                     backgroundColor:
@@ -653,7 +653,7 @@ class _HomeState extends OptimizedState<Home> with WidgetsBindingObserver, TrayL
                     return PopScope(
                       canPop: false,
                       child: TitleBarWrapper(
-                          child: kIsWeb || kIsDesktop ? SetupView() : SplashScreen(shouldNavigate: fullyLoaded)),
+                          child: kIsWeb || kIsDesktop ? SetupView() : EchoSplash(shouldNavigate: fullyLoaded)),
                     );
                   }
                 },

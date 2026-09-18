@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:bluebubbles/echo/glass/echo_atmosphere.dart';
+import 'package:bluebubbles/echo/screens/setup/echo_welcome.dart';
+import 'package:bluebubbles/echo/widgets/echo_wordmark.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -19,7 +22,6 @@ import 'package:bluebubbles/app/layouts/setup/pages/contacts/request_contacts.da
 import 'package:bluebubbles/app/layouts/setup/pages/bluetooth/request_bluetooth.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/setup_checks/mac_setup_check.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/sync/sync_progress.dart';
-import 'package:bluebubbles/app/layouts/setup/pages/welcome/welcome_page.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
@@ -944,14 +946,17 @@ class _SetupViewState extends OptimizedState<SetupView> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: ss.settings.windowEffect.value != WindowEffect.disabled ? Colors.transparent : context.theme.colorScheme.background,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              SetupHeader(),
-              const SizedBox(height: 20),
-              SetupPages(),
-            ],
+        backgroundColor: Colors.transparent,
+        // Setup sits on the same atmospheric floor as the rest of Echo.
+        body: EchoAtmosphere(
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                SetupHeader(),
+                const SizedBox(height: 20),
+                SetupPages(),
+              ],
+            ),
           ),
         ),
       ),
@@ -972,14 +977,12 @@ class SetupHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              Hero(
+              const Hero(
                 tag: "setup-icon",
-                child: Image.asset("assets/icon/icon.png", width: 30, fit: BoxFit.contain)
-              ),
-              const SizedBox(width: 10),
-              Text(
-                "OpenBubbles",
-                style: context.theme.textTheme.bodyLarge!.apply(fontWeightDelta: 2, fontSizeFactor: 1.35),
+                child: Material(
+                  color: Colors.transparent,
+                  child: EchoWordmark(size: 26, glow: false),
+                ),
               ),
             ],
           ),
@@ -1081,7 +1084,7 @@ class SetupPages extends StatelessWidget {
         controller: controller.pageController,
         children: <Widget>[
           if (!ss.settings.isDumb.value)
-          WelcomePage(),
+          const EchoWelcome(),
           if (!kIsWeb && !kIsDesktop && !ss.settings.isDumb.value) RequestContacts(),
           if (!kIsWeb && !kIsDesktop && !ss.settings.isDumb.value) BatteryOptimizationCheck(),
           if (!kIsWeb && !kIsDesktop && !ss.settings.isDumb.value) RequestBluetooth(),
