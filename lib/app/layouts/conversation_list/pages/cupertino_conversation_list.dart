@@ -323,12 +323,17 @@ class CupertinoConversationListState
 
                           return SliverList(
                             delegate: SliverChildBuilderDelegate(
+                              findChildIndexCallback: (key) =>
+                                  findChildIndexByKey(
+                                      _chats, key, (item) => item.guid),
                               (context, index) {
-                                final chat = (showDeleted
-                                        ? deletedChats
-                                        : chats.chats)
-                                    .firstWhere(
-                                        (e) => e.guid == _chats[index].guid);
+                                // _chats is filtered straight out of chats.chats
+                                // (the helpers are .where().toList(), so the
+                                // elements are the same live Chat instances) —
+                                // the old firstWhere re-scanned the full list
+                                // once per tile, making the whole SliverList
+                                // O(n^2) on every rebuild. Index directly.
+                                final chat = _chats[index];
                                 final child = ConversationTile(
                                   key: Key(chat.guid.toString()),
                                   chat: chat,
@@ -352,6 +357,12 @@ class CupertinoConversationListState
                                         : const SizedBox.shrink());
 
                                 return Column(
+                                  // Key the top-level child so the sliver's
+                                  // findChildIndexCallback can locate a tile
+                                  // that moved (e.g. a chat bumped to the top on
+                                  // a new message) and reuse it instead of
+                                  // rebuilding every row.
+                                  key: ValueKey(chat.guid),
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     child,

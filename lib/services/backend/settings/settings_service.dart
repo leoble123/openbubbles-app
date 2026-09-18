@@ -48,6 +48,14 @@ class SettingsService extends GetxService {
         final mode = await settings.getDisplayMode();
         if (mode != DisplayMode.auto) {
           FlutterDisplayMode.setPreferredMode(mode);
+        } else {
+          // "Auto" (the default) previously did nothing, which leaves Flutter
+          // pinned at 60Hz on high-refresh Samsung panels (e.g. the 120Hz S24
+          // FE) and makes scrolling/animations feel sluggish. Opt into the
+          // panel's highest refresh rate instead; adaptive/LTPO panels still
+          // idle back down when the screen is static, so this is the correct
+          // meaning of "Auto" without a meaningful battery cost when idle.
+          await FlutterDisplayMode.setHighRefreshRate();
         }
       } catch (_) {}
       // system appearance
