@@ -4,6 +4,7 @@ import 'package:bluebubbles/app/layouts/settings/settings_page.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/echo/glass/echo_atmosphere.dart';
 import 'package:bluebubbles/echo/glass/glass_surface.dart';
+import 'package:bluebubbles/echo/screens/conversations/echo_chat_actions.dart';
 import 'package:bluebubbles/echo/screens/conversations/echo_chat_tile.dart';
 import 'package:bluebubbles/echo/theme/echo_prefs.dart';
 import 'package:bluebubbles/echo/theme/echo_tokens.dart';
@@ -157,6 +158,7 @@ class _EchoConversationListState extends State<EchoConversationList> {
                         accent: echoPrefs.accentFor(chat.guid),
                         compact: echoPrefs.density.value == EchoDensity.compact,
                         onTap: () => _openChat(chat),
+                        onLongPress: () => showEchoChatActions(context, chat),
                       );
                     },
                   );
